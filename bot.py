@@ -37,7 +37,8 @@ def bot():
     paso = sesiones[numero]["paso"]
 
     if paso == "inicio":
-        msg.body("👋 ¡Hola! Soy PrecioYa 🛒\nTe ayudo a comparar precios en tu ciudad.\n\n¿Qué producto querés buscar?")
+        msg.body("👋 ¡Hola! Soy Turkito 🛒, el asistente de *Tu Mercado Digital*.\nTe ayudo a comparar precios en tu ciudad.\n\n¿Qué producto querés buscar?")
+        
         sesiones[numero]["paso"] = "esperando_producto"
 
     elif paso == "esperando_producto":
