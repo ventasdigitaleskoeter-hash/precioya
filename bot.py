@@ -27,13 +27,21 @@ def buscar_productos(producto, localidad):
     return r.json()
 
 def buscar_comercio(numero):
-    url = f"{SUPABASE_URL}/rest/v1/comercios"
-    params = {"telefono_wp": f"eq.{numero}"}
-    r = httpx.get(url, headers=HEADERS, params=params)
-    data = r.json()
-    if isinstance(data, list) and len(data) > 0:
-        return data[0]
-    return None
+    try:
+        url = f"{SUPABASE_URL}/rest/v1/comercios"
+        params = {"telefono_wp": f"eq.{numero}"}
+        print(f"[DEBUG] URL: {url}")
+        print(f"[DEBUG] KEY: {SUPABASE_KEY[:20] if SUPABASE_KEY else 'VACIA'}")
+        r = httpx.get(url, headers=HEADERS, params=params, timeout=10)
+        print(f"[DEBUG] Status: {r.status_code}")
+        print(f"[DEBUG] Response: {r.text[:200]}")
+        data = r.json()
+        if isinstance(data, list) and len(data) > 0:
+            return data[0]
+        return None
+    except Exception as e:
+        print(f"[ERROR] buscar_comercio: {e}")
+        return None
 
 def registrar_comercio(numero, nombre, direccion, telefono):
     url = f"{SUPABASE_URL}/rest/v1/comercios"
