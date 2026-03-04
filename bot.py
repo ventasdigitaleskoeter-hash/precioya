@@ -31,7 +31,9 @@ def buscar_comercio(numero):
     params = {"telefono_wp": f"eq.{numero}"}
     r = httpx.get(url, headers=HEADERS, params=params)
     data = r.json()
-    return data[0] if data else None
+    if isinstance(data, list) and len(data) > 0:
+        return data[0]
+    return None
 
 def registrar_comercio(numero, nombre, direccion, telefono):
     url = f"{SUPABASE_URL}/rest/v1/comercios"
