@@ -57,7 +57,8 @@ def registrar_comercio(numero, nombre, direccion, telefono):
         r = httpx.post(url, headers=HEADERS, json=data)
         print(f"[DEBUG] Status registro: {r.status_code}")
         print(f"[DEBUG] Response registro: {r.text[:200]}")
-        return r.status_code == 201
+        print(f"[DEBUG] Status registro: {r.status_code} Response: {r.text[:100]}")
+        return r.status_code in [200, 201]
     except Exception as e:
         print(f"[ERROR] registrar_comercio: {e}")
         return False
