@@ -99,13 +99,10 @@ def bot():
     paso = sesiones[numero]["paso"]
     comercio = buscar_comercio(numero)
 
-    # ── INICIO: BIENVENIDA ────────────────────
-    if paso == "inicio":
-        if mensaje_lower in ["hola", "hi", "buenas", "buen dia", "buenas tardes", "buenas noches", "inicio", "empezar"]:
-            msg.body("👋 ¡Hola! Soy *Turkito* 🛒 de *Tu Mercado Digital*.\n\n¿Cómo puedo ayudarte?\n\n1️⃣ Soy *cliente* y quiero consultar precios\n2️⃣ Soy *comerciante* y quiero gestionar mi comercio")
-            sesiones[numero]["paso"] = "eligiendo_rol"
-        else:
-            msg.body("👋 ¡Hola! Escribí *hola* para empezar.")
+    # ── SIEMPRE RESETEAR CON HOLA ─────────────
+    if mensaje_lower in ["hola", "hi", "buenas", "buen dia", "buenas tardes", "buenas noches", "inicio", "empezar"]:
+        sesiones[numero] = {"paso": "eligiendo_rol"}
+        msg.body("👋 ¡Hola! Soy *Turkito* 🛒 de *Tu Mercado Digital*.\n\n¿Cómo puedo ayudarte?\n\n1️⃣ Soy *cliente* y quiero consultar precios\n2️⃣ Soy *comerciante* y quiero gestionar mi comercio")
         return str(resp)
 
     # ── ELEGIR ROL ────────────────────────────
@@ -185,7 +182,7 @@ def bot():
                 texto += "\nEscribí *cargar*, *editar*, *eliminar* o *salir*"
                 msg.body(texto)
         elif mensaje_lower in ["salir", "exit", "volver"]:
-            sesiones[numero] = {"paso": "inicio"}
+            sesiones[numero] = {"paso": "eligiendo_rol"}
             msg.body("👋 ¡Hasta luego! Escribí *hola* cuando quieras volver.")
         else:
             msg.body(
@@ -310,7 +307,7 @@ def bot():
         return str(resp)
 
     msg.body("No entendí. Escribí *hola* para empezar.")
-    sesiones[numero] = {"paso": "inicio"}
+    sesiones[numero] = {"paso": "eligiendo_rol"}
     return str(resp)
 
 if __name__ == "__main__":
