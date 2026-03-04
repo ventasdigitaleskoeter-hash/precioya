@@ -44,16 +44,23 @@ def buscar_comercio(numero):
         return None
 
 def registrar_comercio(numero, nombre, direccion, telefono):
-    url = f"{SUPABASE_URL}/rest/v1/comercios"
-    data = {
-        "telefono_wp": numero,
-        "comercio": nombre,
-        "direccion": direccion,
-        "telefono": telefono,
-        "localidad": "Santa Rosa de Calamuchita"
-    }
-    r = httpx.post(url, headers=HEADERS, json=data)
-    return r.status_code == 201
+    try:
+        url = f"{SUPABASE_URL}/rest/v1/comercios"
+        data = {
+            "telefono_wp": numero,
+            "comercio": nombre,
+            "direccion": direccion,
+            "telefono": str(telefono).strip(),
+            "localidad": "Santa Rosa de Calamuchita"
+        }
+        print(f"[DEBUG] Registrando comercio: {data}")
+        r = httpx.post(url, headers=HEADERS, json=data)
+        print(f"[DEBUG] Status registro: {r.status_code}")
+        print(f"[DEBUG] Response registro: {r.text[:200]}")
+        return r.status_code == 201
+    except Exception as e:
+        print(f"[ERROR] registrar_comercio: {e}")
+        return False
 
 def cargar_producto(comercio, producto, marca, precio):
     url = f"{SUPABASE_URL}/rest/v1/productos"
